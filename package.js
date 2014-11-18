@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'mapbox',
+  name: 'trepafi:mapbox',
   summary: 'Integrating MapBox.js with Meteor  ',
   version: '0.0.1',
   git: 'https://github.com/trepafi/meteor-mapbox.git'
@@ -14,6 +14,6 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use('tinytest');
-  api.use('mapbox');
+  api.use('trepafi:mapbox');
   api.addFiles('mapbox-tests.js');
 });
