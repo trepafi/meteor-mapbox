@@ -1,5 +1,4 @@
-Mapbox for Meteor 
-=================
+# Mapbox 2.1.4 for Meteor 
 
 ## Information
 * Meteor version: 1.0
@@ -44,4 +43,7 @@ Tracker.autorun(function (computation) {
 * `Tracker.autorun` will be aware of the moment when everything is ready
 * Then you can start with the Mapbox initialization
 * Finally I've added `computation.stop()` to double check that Mapbox won't be initiated again. I've added this for teaching purposes
-* 
+
+
+## Disclaimer
+I've based this Meteor package in the work of [Paulo Borges](https://github.com/pauloborges). Haven't forked the project because my different aproach when loading the Mapbox packages.
