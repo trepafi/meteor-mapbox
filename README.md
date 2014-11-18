@@ -46,4 +46,4 @@ Tracker.autorun(function (computation) {
 
 
 ## Disclaimer
-I've based this Meteor package in the work of [Paulo Borges](https://github.com/pauloborges). Haven't forked the project because my different aproach when loading the Mapbox packages.
+I've based this Meteor package in the work of [Paulo Borges](https://github.com/pauloborges). Haven't forked the project due my different approach when loading the Mapbox packages.
