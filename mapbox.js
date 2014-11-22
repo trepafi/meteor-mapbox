@@ -97,8 +97,8 @@ function LoadingMapbox() {
         head = document.getElementsByTagName('head')[0],
         baseUrl = 'https://api.tiles.mapbox.com/mapbox.js/',
         sources = {
-            mapboxJS: { src: 'v2.1.4/mapbox.js', type: 'js', core: true },
-            mapboxCSS: { src: 'v2.1.4/mapbox.css', type: 'css', core: true },
+            mapboxJS: { src: 'v2.1.4/mapbox.js', type: 'js', core: true, loading: true },
+            mapboxCSS: { src: 'v2.1.4/mapbox.css', type: 'css', core: true, loading: true },
             plugins: pluginsSource
         },
         isLoaded = false;
@@ -116,12 +116,19 @@ function LoadingMapbox() {
         return isLoaded;
     }
 
+    function addToQueue(list, items) {
+        _.each(items, function(item) {
+            item.loading = true;
+        });
+
+        return _.union(list, items);
+    }
+
     function load() {
         _.each(_.values(arguments), function(plugin) {
             if(sources.plugins[plugin]) {
-                // queue = _.union(queue, sources.plugins[plugin])
-                jsQueue = _.union(cssQueue, _.where(sources.plugins[plugin], {type: 'js'}));
-                cssQueue = _.union(cssQueue, _.where(sources.plugins[plugin], {type: 'css'}));
+                jsQueue = addToQueue(jsQueue, _.where(sources.plugins[plugin], {type: 'js'}));
+                cssQueue = addToQueue(cssQueue, _.where(sources.plugins[plugin], {type: 'css'}));
             }
         });
 
@@ -133,7 +140,6 @@ function LoadingMapbox() {
 
     function loadFiles(queue) {
         _.each(queue, function(file) {
-            file.loading = true;
             loadFile(file, onFileLoaded);
         });
     }
@@ -155,26 +161,17 @@ function LoadingMapbox() {
         }
 
         head.appendChild(elem);
-
         elem.addEventListener('load', function() {
-            // console.log('>>> file loaded', url);
             file.loading = false;
             callback();
         }, false);
     }
 
     function onFileLoaded() {
-        // console.log('>>> loaded ', url);
         if( _.size(_.compact(_.pluck(_.union(cssQueue, jsQueue), 'loading'))) === 0 ) {
+            // console.log('IS LOADED', isLoaded);
             isLoaded = true;
             tracker.changed();
-        }
-        
+        }       
     }
 }
-
-
-
-
-
-

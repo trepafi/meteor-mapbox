@@ -1,7 +1,7 @@
 Package.describe({
   name: 'trepafi:mapbox',
   summary: 'Integrating MapBox.js with Meteor  ',
-  version: '0.0.1',
+  version: '0.0.3',
   git: 'https://github.com/trepafi/meteor-mapbox.git'
 });
 
