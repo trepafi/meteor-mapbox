@@ -1,4 +1,4 @@
-# Mapbox 2.1.4 for Meteor 
+# Mapbox for Meteor
 
 ## Information
 * Meteor version: 1.0
@@ -12,38 +12,21 @@ meteor add trepafi:mapbox
 ````
 
 ## Usage
+You don't need to do anything just use directly MapBoxJS
 ````
-Mapbox.load(['minimap']);
-var container;
-var config = {
-	containerId: 'map',
-	token: MAPBOX_TOKEN,
-	projectId: MAPBOX_PROJECT_ID
-	defaults: {
-		zoom: 9,
-		// Arbitrary location for example purposes
-		marbella: [ 36.5116478, -4.8874875,15 ]
-	}
-};
+<div id='map'></div>
+````
 
-Tracker.autorun(function (computation) {
-	if (Mapbox.loaded()) {
-			L.mapbox.accessToken = config.token;
-			container = L.mapbox.map(config.containerId, config.projectId);
-			container.setView(config.defaults.marbella, config.defaults.zoom);
-			computation.stop();
-		}
-	});
-});
-```
+
+````
+L.mapbox.accessToken = '<your access token here>';
+var map = L.mapbox.map('map', 'examples.map-i86nkdio')
+			.setView([40, -74.50], 9);
+````
 
 ## Explanation
-* The `Mapbox.load()` is a reactive method which waits for the Mapbox.js core and plugin files
-* You can specify a list of plugins to load `['minimap', 'markercluster']`
-* `Tracker.autorun` will be aware of the moment when everything is ready
-* Then you can start with the Mapbox initialization
-* Finally I've added `computation.stop()` to double check that Mapbox won't be initiated again. I've added this for teaching purposes
+* All the files are previously loaded so you can use Mapbox directly
 
 
-## Disclaimer
-I've based this Meteor package in the work of [Paulo Borges](https://github.com/pauloborges). Haven't forked the project due my different approach when loading the Mapbox packages.
+## Author
+Made with &#9829; in Marbella for [Lubert Palacios](es.linkedin.com/in/lubertpalacios/en)

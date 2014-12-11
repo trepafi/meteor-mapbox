@@ -130,7 +130,5 @@ function LoadingMapbox() {
                 queue.push(addFile(plugin, true));
             });
         }
-
-        // console.log(JSON.stringify(queue, null, "    "));
     }
 }
