@@ -1,3 +1,5 @@
+var path = require("path");
+var url = require("url");
 var pluginsSource = {
     directions: [
         { src: 'mapbox-directions.js/v0.0.1/mapbox.directions.js', type: 'js' },
@@ -85,26 +87,20 @@ var pluginsSource = {
 
 // Defining Object
 Mapbox = new LoadingMapbox();
-
+Mapbox.load();
 
 /*
  * MapBox Loading Class
  *
  */
 function LoadingMapbox() {
-    var
-        tracker = new Tracker.Dependency,
-        head = document.getElementsByTagName('head')[0],
+    var isLoaded = false,
+        queue = [];
         baseUrl = 'https://api.tiles.mapbox.com/mapbox.js/',
-        sources = {
-            mapboxJS: { src: 'v2.1.4/mapbox.js', type: 'js', core: true, loading: true },
-            mapboxCSS: { src: 'v2.1.4/mapbox.css', type: 'css', core: true, loading: true },
-            plugins: pluginsSource
-        },
-        isLoaded = false;
-
-    var jsQueue = [];
-    var cssQueue = [ sources.mapboxCSS ];
+        core = [
+            { src: 'v2.1.4/mapbox.js', type: 'js', core: true},
+            { src: 'v2.1.4/mapbox.css', type: 'css', core: true}
+        ];
 
     return {
         loaded: loaded,
@@ -112,66 +108,29 @@ function LoadingMapbox() {
     }
 
     function loaded() {
-        tracker.depend();
         return isLoaded;
     }
 
-    function addToQueue(list, items) {
-        _.each(items, function(item) {
-            item.loading = true;
-        });
-
-        return _.union(list, items);
+    function addFile(file, isPlugin) {
+        return {
+            file: file.src,
+            url: url.resolve(baseUrl + (isPlugin ? 'plugins/' : ''), file.src),
+            bare: file.type === 'js'
+        }
     }
 
     function load() {
-        _.each(_.values(arguments), function(plugin) {
-            if(sources.plugins[plugin]) {
-                jsQueue = addToQueue(jsQueue, _.where(sources.plugins[plugin], {type: 'js'}));
-                cssQueue = addToQueue(cssQueue, _.where(sources.plugins[plugin], {type: 'css'}));
-            }
+        core.forEach(function(item) {
+            queue.push(addFile(item));
         });
 
-        loadFiles(cssQueue);
-        loadFile(sources.mapboxJS, function() {
-            loadFiles(jsQueue);
-        });
-    }
-
-    function loadFiles(queue) {
-        _.each(queue, function(file) {
-            loadFile(file, onFileLoaded);
-        });
-    }
-
-    function loadFile(file, callback) {
-        var elem, url = baseUrl + (!file.core ? 'plugins/' : '') + file.src;
-        switch(file.type) {
-            case 'js':
-                elem = document.createElement('script');
-                elem.type = 'text/javascript';
-                elem.src = url;
-                elem.defer = true;
-                break;
-            case 'css':
-                elem = document.createElement('link');
-                elem.rel = 'stylesheet';
-                elem.href = url;
-                break;
+        for(var i in pluginsSource) {
+            var pluginSrc = pluginsSource[i];
+            pluginSrc.forEach(function(plugin) {
+                queue.push(addFile(plugin, true));
+            });
         }
 
-        head.appendChild(elem);
-        elem.addEventListener('load', function() {
-            file.loading = false;
-            callback();
-        }, false);
-    }
-
-    function onFileLoaded() {
-        if( _.size(_.compact(_.pluck(_.union(cssQueue, jsQueue), 'loading'))) === 0 ) {
-            // console.log('IS LOADED', isLoaded);
-            isLoaded = true;
-            tracker.changed();
-        }
+        // console.log(JSON.stringify(queue, null, "    "));
     }
 }
