@@ -87,7 +87,8 @@ var pluginsSource = {
 
 // Defining Object
 Mapbox = new LoadingMapbox();
-Mapbox.load();
+var output = Mapbox.load();
+console.log(JSON.stringify(output, null, "    "));
 
 /*
  * MapBox Loading Class
@@ -99,7 +100,9 @@ function LoadingMapbox() {
         baseUrl = 'https://api.tiles.mapbox.com/mapbox.js/',
         core = [
             { src: 'v2.1.4/mapbox.js', type: 'js', core: true},
-            { src: 'v2.1.4/mapbox.css', type: 'css', core: true}
+            { src: 'v2.1.4/mapbox.css', type: 'css', core: true},
+            { src: 'v2.1.4/images/icons-000000@2x.png', type: 'image', core: true},
+            { src: 'v2.1.4/images/icons-ffffff@2x.png', type: 'image', core: true}
         ];
 
     return {
@@ -130,5 +133,7 @@ function LoadingMapbox() {
                 queue.push(addFile(plugin, true));
             });
         }
+
+        return queue;
     }
 }
