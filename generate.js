@@ -88,7 +88,7 @@ var pluginsSource = {
 // Defining Object
 Mapbox = new LoadingMapbox();
 var output = Mapbox.load();
-console.log(JSON.stringify(output, null, "    "));
+// console.log(JSON.stringify(output, null, "    "));
 
 /*
  * MapBox Loading Class
