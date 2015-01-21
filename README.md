@@ -39,4 +39,4 @@ var map = L.mapbox.map('map', 'examples.map-i86nkdio')
 
 
 ## Author
-Made with &#9829; in Marbella for [Lubert Palacios](es.linkedin.com/in/lubertpalacios/en)
+Made with &#9829; in Marbella by [Lubert](es.linkedin.com/in/lubertpalacios/en)
